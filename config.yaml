@@ -1,0 +1,12 @@
+telegram:
+  token: "your-token-id"
+  chat_id: "your-chat-id"
+
+thresholds:
+  cpu: 80  # Soglia percentuale di CPU
+  ram: 80  # Soglia percentuale di RAM
+  disk: 80  # Soglia percentuale di disco
+
+repeat_threshold: 5  # Soglia di messaggi consecutivi
+time_threshold: 600  # Intervallo di tempo in secondi (10 minuti)
+interval: 60  # Intervallo di monitoraggio in secondi
