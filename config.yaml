@@ -5,8 +5,8 @@ telegram:
 thresholds:
   cpu: 80  # Soglia percentuale di CPU
   ram: 80  # Soglia percentuale di RAM
-  disk: 80  # Soglia percentuale di disco
+  disk: 90  # Soglia percentuale di /home
+  disk_2: 80  # Soglia percentuale di /data
 
 repeat_threshold: 5  # Soglia di messaggi consecutivi
-time_threshold: 600  # Intervallo di tempo in secondi (10 minuti)
-interval: 60  # Intervallo di monitoraggio in secondi
+interval: 15  # Intervallo di monitoraggio in secondi
