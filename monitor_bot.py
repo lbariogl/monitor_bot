@@ -1,7 +1,6 @@
 import psutil
 import yaml
 from telegram import Bot
-import time
 import asyncio
 
 # Definizione degli emoji con Unicode
