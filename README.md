@@ -31,9 +31,11 @@ Questo script ti permette di monitorare l'uso di CPU, RAM e disco sul tuo comput
     ```
 
 2. **Configura un ambiente virtuale (opzionale ma consigliato)**
+  - Assicurati di avere installato `pyenv` e l'estensione `pyenv-virtualenv`. Puoi creare ed attivare l'ambiente virtuale con:
+
     ```bash
-    python3.12 -m venv venv
-    source venv/bin/activate
+    pyenv virtualenv 3.12.0 monitor_bot_env  # Crea un ambiente virtuale
+    pyenv activate monitor_bot_env  # Attiva l'ambiente virtuale
     ```
 
 3. **Installa le dipendenze**
@@ -57,7 +59,6 @@ Questo script ti permette di monitorare l'uso di CPU, RAM e disco sul tuo comput
 
     repeat_threshold: 5  # Numero di notifiche consecutive per il messaggio speciale
     interval: 60         # Intervallo di monitoraggio in secondi
-    ```
 
 5. **Configura il servizio di sistema**
 
