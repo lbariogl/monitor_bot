@@ -22,7 +22,7 @@ Questo script ti permette di monitorare l'uso di CPU, RAM e disco sul tuo comput
      - Cerca `chat_id` nei messaggi inviati al bot; avrà un formato simile a `12345678`.
    - **Per gruppi**: Aggiungi il bot al gruppo e ripeti il passaggio sopra per ottenere l'ID del gruppo.
 
-## Installazione
+### 3. Installazione
 
 1. **Crea la directory di lavoro e copia lo script**
     ```bash
@@ -59,6 +59,7 @@ Questo script ti permette di monitorare l'uso di CPU, RAM e disco sul tuo comput
 
     repeat_threshold: 5  # Numero di notifiche consecutive per il messaggio speciale
     interval: 60         # Intervallo di monitoraggio in secondi
+    ```
 
 5. **Configura il servizio di sistema**
 
@@ -84,7 +85,38 @@ Questo script ti permette di monitorare l'uso di CPU, RAM e disco sul tuo comput
     WantedBy=multi-user.target
     ```
 
-6. **Ricarica systemd e abilita il servizio**
+6. **Configurazione per l'Esecuzione di `du` senza Password**
+
+   Per monitorare correttamente l'uso del disco, il bot richiede i permessi per eseguire il comando `du` in modalità `sudo` senza che venga richiesta la password.
+
+   1. **Apri il file di configurazione `sudoers`**:
+      ```bash
+      sudo visudo
+      ```
+
+   2. **Aggiungi una regola `NOPASSWD` per `du`**:
+      Aggiungi la seguente riga alla fine del file, sostituendo `<nome_utente>` con l'utente che esegue il bot:
+      ```bash
+      <nome_utente> ALL=(ALL) NOPASSWD: /usr/bin/du
+      ```
+
+   3. **Ricarica la configurazione di `sudo`**:
+      Dopo aver modificato il file `sudoers`, ricarica la configurazione per applicare le modifiche. Esegui:
+      ```bash
+      sudo visudo -c
+      ```
+
+      Questo comando controllerà la sintassi del file e confermerà che non ci siano errori.
+
+   4. **Testa la configurazione**:
+      Ora puoi testare se il comando `du` funziona senza chiedere la password. Esegui il comando `du` come l'utente specificato (che esegue il bot):
+      ```bash
+      sudo -u <nome_utente> du -h --max-depth=1
+      ```
+
+      Se il comando viene eseguito correttamente senza chiedere la password, la configurazione è stata applicata con successo.
+
+7. **Ricarica systemd e abilita il servizio**
     ```bash
     sudo systemctl daemon-reload
     sudo systemctl enable monitor_bot.service
@@ -158,5 +190,4 @@ Se ricevi messaggi di notifica su Telegram, il bot è configurato correttamente.
   ```
 
 Queste operazioni garantiranno che il bot funzioni con le configurazioni più aggiornate.
-
 

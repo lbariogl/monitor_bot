@@ -2,6 +2,7 @@ import psutil
 import yaml
 from telegram import Bot
 import asyncio
+import subprocess
 
 # Definizione degli emoji con Unicode
 SIREN_EMOJI = "\U0001F6A8"  # Emoji for general alert 🚨
@@ -56,6 +57,20 @@ async def send_special_message(bot, chat_id):
     await bot.send_message(chat_id=chat_id, text=special_message)
 
 
+# Funzione per inviare i dettagli dell'uso del disco
+async def send_disk_usage_details(bot, chat_id, disk_path):
+    # Esegue il comando e cattura l'output
+    try:
+        result = subprocess.check_output(
+            ["sudo", "du", "-h", "--max-depth=1", disk_path], text=True
+        )
+    except subprocess.CalledProcessError as e:
+        result = f"Errore durante l'esecuzione del comando: {e}"
+
+    disk_usage_message = f"Dettagli utilizzo disco su {disk_path}:\n\n{result}"
+    await bot.send_message(chat_id=chat_id, text=disk_usage_message)
+
+
 # Funzione per monitorare le risorse
 async def monitor_system(config, bot, message_counts):
     thresholds = config["thresholds"]
@@ -94,6 +109,7 @@ async def monitor_system(config, bot, message_counts):
         message_counts["disk"] += 1
         if message_counts["disk"] > repeat_threshold:
             await send_special_message(bot, chat_id)
+            await send_disk_usage_details(bot, chat_id, "/home")  # Dettagli uso disco
             message_counts["disk"] = 0  # Reset contatore
         else:
             await send_disk_notification(
@@ -106,6 +122,7 @@ async def monitor_system(config, bot, message_counts):
         message_counts["disk_2"] += 1
         if message_counts["disk_2"] > repeat_threshold:
             await send_special_message(bot, chat_id)
+            await send_disk_usage_details(bot, chat_id, "/data")  # Dettagli uso disco
             message_counts["disk_2"] = 0  # Reset contatore
         else:
             await send_disk_2_notification(
